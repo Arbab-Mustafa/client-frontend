@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Music4, Mic2, Radio } from 'lucide-react';
-import AudioUploader from './components/AudioUploader';
-import DownloadSection from './components/DownloadSection';
-import type { SeparationJob } from './types';
+import React, { useState, useEffect } from "react";
+import { Music4, Mic2, Radio } from "lucide-react";
+import AudioUploader from "./components/AudioUploader";
+import DownloadSection from "./components/DownloadSection";
+import type { SeparationJob } from "./types";
 
-const API_URL = 'http://localhost:5001';
+const API_URL = "https://client-production-ec4d.up.railway.app";
 
 export default function App() {
   const [isUploading, setIsUploading] = useState(false);
-  const [processedResult, setProcessedResult] = useState<SeparationJob | null>(null);
+  const [processedResult, setProcessedResult] = useState<SeparationJob | null>(
+    null
+  );
   const [error, setError] = useState<string | null>(null);
   const [isServerConnected, setIsServerConnected] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
@@ -17,17 +19,19 @@ export default function App() {
     const checkServer = async () => {
       try {
         const response = await fetch(`${API_URL}/health`);
-        if (!response.ok) throw new Error('Server responded with an error');
-        
+        if (!response.ok) throw new Error("Server responded with an error");
+
         const data = await response.json();
-        setIsServerConnected(data.status === 'healthy');
+        setIsServerConnected(data.status === "healthy");
         setConnectionError(null);
       } catch (error) {
         setIsServerConnected(false);
-        setConnectionError(error instanceof Error ? error.message : 'Failed to connect to server');
+        setConnectionError(
+          error instanceof Error ? error.message : "Failed to connect to server"
+        );
       }
     };
-    
+
     checkServer();
     const interval = setInterval(checkServer, 5000);
     return () => clearInterval(interval);
@@ -39,23 +43,23 @@ export default function App() {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
       const response = await fetch(`${API_URL}/upload`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || 'Upload failed');
+        throw new Error(data.detail || "Upload failed");
       }
 
       setProcessedResult(data);
     } catch (error) {
-      console.error('Upload error:', error);
-      setError(error instanceof Error ? error.message : 'Upload failed');
+      console.error("Upload error:", error);
+      setError(error instanceof Error ? error.message : "Upload failed");
     } finally {
       setIsUploading(false);
     }
@@ -75,21 +79,25 @@ export default function App() {
             Sur
           </h1>
           <p className="text-lg text-gray-300 max-w-xl mx-auto">
-          Drop your song and generate stems in seconds using the power of AI
+            Drop your song and generate stems in seconds using the power of AI
           </p>
         </div>
 
         {/* Server Status */}
         <div className="glass-panel text-center">
-          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm ${
-            isServerConnected 
-              ? 'bg-yellow-900/30 text-yellow-400' 
-              : 'bg-red-900/30 text-red-400'
-          }`}>
-            <span className={`w-2 h-2 rounded-full mr-2 ${
-              isServerConnected ? 'bg-yellow-400' : 'bg-red-400'
-            }`} />
-            {isServerConnected ? 'Server Connected' : 'Server Disconnected'}
+          <span
+            className={`inline-flex items-center px-3 py-1 rounded-full text-sm ${
+              isServerConnected
+                ? "bg-yellow-900/30 text-yellow-400"
+                : "bg-red-900/30 text-red-400"
+            }`}
+          >
+            <span
+              className={`w-2 h-2 rounded-full mr-2 ${
+                isServerConnected ? "bg-yellow-400" : "bg-red-400"
+              }`}
+            />
+            {isServerConnected ? "Server Connected" : "Server Disconnected"}
           </span>
         </div>
 
@@ -106,14 +114,10 @@ export default function App() {
           )}
 
           {error && (
-            <div className="glass-panel text-center text-red-200">
-              {error}
-            </div>
+            <div className="glass-panel text-center text-red-200">{error}</div>
           )}
 
-          {processedResult && (
-            <DownloadSection job={processedResult} />
-          )}
+          {processedResult && <DownloadSection job={processedResult} />}
         </div>
       </div>
 
