@@ -4,7 +4,7 @@ import AudioUploader from "./components/AudioUploader";
 import DownloadSection from "./components/DownloadSection";
 import type { SeparationJob } from "./types";
 
-const API_URL = "https://client-production-ec4d.up.railway.app";
+const API_URL = "https://web-production-71ade.up.railway.app/";
 
 export default function App() {
   const [isUploading, setIsUploading] = useState(false);

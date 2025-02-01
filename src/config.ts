@@ -2,7 +2,7 @@ export const API_CONFIG = {
   // During development, point to local backend
   baseUrl:
     import.meta.env.VITE_API_URL ||
-    "https://client-production-ec4d.up.railway.app",
+    "https://web-production-71ade.up.railway.app",
   // Adjust timeout for long-running operations
   timeout: 300000, // 5 minutes
 };
