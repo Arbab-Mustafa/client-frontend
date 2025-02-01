@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-  // During development, point to local backend
+  // During development, point to local
   baseUrl:
     import.meta.env.VITE_API_URL ||
     "https://web-production-71ade.up.railway.app",
